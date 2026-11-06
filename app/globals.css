@@ -3,13 +3,66 @@
 @tailwind utilities;
 
 :root { color-scheme: light; }
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .24s; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: #f8faff;
-  color: #101828;
-  font-family: Arial, Helvetica, sans-serif;
-}
+body { margin: 0; background: #f8faff; color: #101828; font-family: Arial, Helvetica, sans-serif; }
 button, input, textarea { font: inherit; }
 ::selection { background: #dce6ff; color: #101d3a; }
+
+@keyframes eveora-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes eveora-glow { 0%, 100% { box-shadow: 0 0 0 rgba(59,130,246,0); } 50% { box-shadow: 0 12px 38px rgba(59,130,246,.12); } }
+@keyframes eveora-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes eveora-slide { from { opacity: 0; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.landing-hero { animation: eveora-rise .65s cubic-bezier(.2,.75,.25,1) both; }
+.landing-art { animation: eveora-rise .8s .08s cubic-bezier(.2,.75,.25,1) both; }
+.feature-card { animation: eveora-rise .55s both; }
+.auth-card { animation: eveora-rise .55s cubic-bezier(.2,.75,.25,1) both; }
+.auth-hero { animation: eveora-rise .65s cubic-bezier(.2,.75,.25,1) both; }
+.campaign-card, .dashboard-card { animation: eveora-slide .5s cubic-bezier(.2,.75,.25,1) both; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+.campaign-card:hover, .dashboard-card:hover { transform: translateY(-4px); box-shadow: 0 18px 48px rgba(16,29,58,.10); border-color: #c8d5ff; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(49,87,213,.35); outline-offset: 2px; }
+@media print { body { background: white !important; } }
+.auth-input { transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease; }
+.auth-primary, .social-button { transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.auth-primary:hover:not(:disabled), .social-button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37,99,235,.12); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* Eveora motion system: lightweight, responsive and reduced-motion aware. */
+@keyframes eveora-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes eveora-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes eveora-soft-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(48,91,210,0); } 50% { box-shadow: 0 12px 30px rgba(48,91,210,.10); } }
+body { animation: eveora-fade-in .35s ease-out both; }
+.landing-art > div:last-child { animation: eveora-soft-pulse 6s ease-in-out infinite; }
+.feature-card { animation: eveora-rise .55s cubic-bezier(.2,.75,.25,1) both; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a, button, input, select, textarea { transition-timing-function: cubic-bezier(.2,.75,.25,1); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(37,99,235,.35); outline-offset: 3px; }
+@media print {
+  body { background: white !important; animation: none !important; }
+  header, button, a[href="/dashboard"] { display: none !important; }
+  #receipt { border: 0 !important; box-shadow: none !important; }
+}
+
+
+/* v1.4 homepage and rewards motion */
+@keyframes eveora-orbit { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
+@keyframes eveora-shimmer { 0% { background-position: -220% 0; } 100% { background-position: 220% 0; } }
+@keyframes eveora-pop { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.reward-orbit { animation: eveora-orbit 5s ease-in-out infinite; }
+.credits-panel { animation: eveora-pop .55s cubic-bezier(.2,.75,.25,1) both; }
+.credits-number { text-shadow: 0 4px 24px rgba(191,219,254,.22); }
+.feature-card { will-change: transform; }
+.landing-hero h1 { text-wrap: balance; }
+@media (prefers-reduced-motion: no-preference) {
+  .landing-hero .inline-flex:first-child { animation: eveora-glow 4s ease-in-out infinite; }
+  .landing-art .rounded-\\[1\\.5rem\\] { animation: eveora-fade .9s ease-out both; }
+  .feature-card:hover { transform: translateY(-5px) scale(1.01); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reward-orbit, .credits-panel { animation: none !important; }
+}

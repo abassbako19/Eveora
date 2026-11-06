@@ -9,6 +9,8 @@ export function Header() {
         <a href="#mission" className="hover:text-eveora-blue">Our mission</a>
         <a href="#how-it-works" className="hover:text-eveora-blue">How it works</a>
         <a href="#possibilities" className="hover:text-eveora-blue">Possibilities</a>
+        <Link href="/donate" className="hover:text-eveora-blue">Donate</Link>
+        <Link href="/request-assistance" className="hover:text-eveora-blue">Get help</Link>
       </nav>
       <div className="flex items-center gap-3">
         <Link href="/login" className="hidden rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white sm:inline-flex">Log in</Link>

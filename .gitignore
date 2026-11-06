@@ -7,3 +7,8 @@ out
 .vercel
 .DS_Store
 *.log
+
+.env.*
+!.env.example
+# Local backup files must never be published
+*.backup
