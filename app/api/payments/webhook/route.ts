@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     });
 
     const { data: row, error: lookupError } = await admin
-      .from("donations")
+      .from("eveora_donations")
       .select("id,amount_kobo,currency,status")
       .eq("reference", ref)
       .maybeSingle();

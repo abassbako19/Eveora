@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function VerifyDonation({searchParams}:{searchParams:Promise<{reference?:string}>}) {
  const {reference}=await searchParams;const supabase=await createClient();const {data:{user}}=await supabase.auth.getUser();if(!user)redirect("/login");
  if(!reference||reference.length>80)return <Result ok={false} title="Missing payment reference" detail="We could not identify this payment." />;
- const {data:donation}=await supabase.from("donations").select("id,status,amount_kobo,currency").eq("reference",reference).eq("user_id",user.id).maybeSingle();
+ const {data:donation}=await supabase.from("eveora_donations").select("id,status,amount_kobo,currency").eq("reference",reference).eq("user_id",user.id).maybeSingle();
  if(!donation)return <Result ok={false} title="Donation not found" detail="This payment reference is not linked to your account." />;
  if(donation.status==="paid")return <Result ok title="Donation confirmed" detail={`Your test donation of ₦${(donation.amount_kobo/100).toLocaleString("en-NG")} was verified.`} reference={reference}/>;
  const secret=process.env.PAYSTACK_SECRET_KEY;
@@ -26,7 +26,7 @@ export default async function VerifyDonation({searchParams}:{searchParams:Promis
   }
   if(result.data?.status==="failed"||result.data?.status==="abandoned"){
    const admin=createSupabaseClient(supabaseUrl,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});
-   await admin.from("donations").update({status:"failed"}).eq("id",donation.id);
+   await admin.from("eveora_donations").update({status:"failed"}).eq("id",donation.id);
   }
   return <Result ok={false} title="Payment not confirmed" detail="Paystack did not report a successful payment. You can return to donations and try again." />;
  }catch{return <Result ok={false} title="Could not verify yet" detail="The payment provider could not be reached. Your donation remains pending; retry by refreshing this page."/>;}

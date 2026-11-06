@@ -117,11 +117,11 @@ create or replace function public.eveora_confirm_donation(p_reference text, p_tr
 returns boolean language plpgsql security definer set search_path = public as $$
 declare v_user uuid; v_donation_id uuid;
 begin
-  update public.donations
+  update public.eveora_donations
     set status='paid', paid_at=coalesce(paid_at,now()),
         paystack_transaction_id=p_transaction_id,
         receipt_number=coalesce(receipt_number,'EVE-REC-' || upper(right(p_reference,12)))
-    where reference=p_reference and status <> 'paid'
+    where reference=p_reference and status in ('pending','failed')
     returning id,user_id into v_donation_id,v_user;
   if v_donation_id is null then return false; end if;
   insert into public.eveora_credits_ledger(user_id,amount,event_type,description,source_key)

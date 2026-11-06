@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     const campaignId = typeof body.campaignId === "string" ? body.campaignId : null;
     if (campaignId) { const { data: campaign } = await supabase.from("campaigns").select("id").eq("id", campaignId).eq("status", "active").maybeSingle(); if (!campaign) return NextResponse.json({ error: "This campaign is not currently accepting donations." }, { status: 400 }); }
     const reference = `EVE-${randomUUID().replaceAll("-","").slice(0,24)}`;
-    const { data: donation, error: insertError } = await supabase.from("donations").insert({
+    const { data: donation, error: insertError } = await supabase.from("eveora_donations").insert({
       user_id: user.id, reference, amount_kobo: amount * 100, currency: "NGN",
       status: "pending", donor_name: donorName || null, message: message || null, campaign_id: campaignId
     }).select("id").single();
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
       if (serviceKey) {
         const admin = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-        await admin.from("donations").update({ status: "failed" }).eq("id", donation.id);
+        await admin.from("eveora_donations").update({ status: "failed" }).eq("id", donation.id);
       }
       return NextResponse.json({ error: result.message || "Paystack could not initialize this test transaction." }, { status: 502 });
     }
