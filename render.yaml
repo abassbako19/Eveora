@@ -13,9 +13,16 @@ services:
         sync: false
       - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
         sync: false
-
       - key: NEXT_PUBLIC_SITE_URL
         value: https://eveora.onrender.com
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: PAYSTACK_MODE
+        value: test
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: ADMIN_EMAILS
+        sync: false
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_MODEL
