@@ -41,7 +41,7 @@ create policy "Users can read their own assistance document metadata" on public.
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('eveora-assistance-private','eveora-assistance-private',false,5242880,array['application/pdf','image/jpeg','image/png'])
-on conflict (id) do update set public=false, file_size_limit=5242880, allowed_mime_types=array['application/pdf','image/jpeg','image/png'];
+on conflict (id) do nothing;
 
 -- Impact Points are non-cash recognition. Rules can be drafted but remain disabled.
 create table if not exists public.impact_point_rules (
