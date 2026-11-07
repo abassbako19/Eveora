@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Globe2, HeartHandshake, ShieldCheck, Sparkles, Users, WalletCards, HandHeart, FileText, Gift } from "lucide-react";
 import { Header } from "@/components/header";
 import { createClient } from "@/lib/supabase/server";
+import { formatCurrency, type EveoraCurrency } from "@/lib/currency";
 
 const features = [
   { icon: Sparkles, title: "Ask Eveora Assistant", text: "Get guided help understanding the platform and organizing your next steps." },
@@ -12,7 +13,7 @@ const features = [
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const { data: campaigns } = await supabase.from("campaigns").select("id,title,slug,summary,category,target_amount_kobo").eq("status","active").order("created_at",{ascending:false}).limit(3);
+  const { data: campaigns } = await supabase.from("campaigns").select("id,title,slug,summary,category,target_amount_kobo,target_amount_minor,currency").eq("status","active").order("created_at",{ascending:false}).limit(3);
   return (
     <main className="overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-0 h-[760px] bg-[radial-gradient(ellipse_at_top_right,_#e4ebff_0%,_transparent_48%),linear-gradient(180deg,_#f4f7ff_0%,_#f8faff_78%)]" />
@@ -83,7 +84,14 @@ export default async function HomePage() {
       </section>
       <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-eveora-blue">Ways to make a difference</p><h2 className="mt-3 text-3xl font-bold tracking-tight text-eveora-ink">Active community campaigns</h2><p className="mt-2 max-w-xl text-slate-600">Explore initiatives published by the Eveora team.</p></div><Link href="/campaigns" className="text-sm font-semibold text-eveora-blue underline">View all campaigns</Link></div>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">{campaigns?.map((campaign,index)=><article key={campaign.id} style={{animationDelay:`${index*90}ms`}} className="feature-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft"><p className="text-xs font-bold uppercase tracking-wider text-eveora-blue">{campaign.category}</p><h3 className="mt-3 text-xl font-bold text-eveora-ink">{campaign.title}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{campaign.summary}</p>{campaign.target_amount_kobo&&<p className="mt-4 text-sm font-semibold text-slate-700">Target ₦{(campaign.target_amount_kobo/100).toLocaleString("en-NG")}</p>}<Link href={`/campaigns/${campaign.slug}`} className="mt-5 inline-flex rounded-xl bg-eveora-blue px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-700">Support campaign <ArrowUpRight size={16} className="ml-2"/></Link></article>)}</div>
+        <div className="mt-8 grid gap-5 md:grid-cols-3">{campaigns?.map((campaign,index)=><article key={campaign.id} style={{animationDelay:`${index*90}ms`}} className="feature-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft"><p className="text-xs font-bold uppercase tracking-wider text-eveora-blue">{campaign.category}</p><h3 className="mt-3 text-xl font-bold text-eveora-ink">{campaign.title}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{campaign.summary}</p>{(campaign.target_amount_minor ?? campaign.target_amount_kobo) && (
+  <p className="mt-4 text-sm font-semibold text-slate-700">
+    Target {formatCurrency(
+      Number(campaign.target_amount_minor ?? campaign.target_amount_kobo) / 100,
+      (campaign.currency || "NGN") as EveoraCurrency
+    )}
+  </p>
+)}<Link href={`/campaigns/${campaign.slug}`} className="mt-5 inline-flex rounded-xl bg-eveora-blue px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-700">Support campaign <ArrowUpRight size={16} className="ml-2"/></Link></article>)}</div>
         {!campaigns?.length&&<div className="mt-7 rounded-2xl border border-dashed border-slate-300 bg-white/70 p-7 text-sm text-slate-500">New campaigns will appear here when published.</div>}
       </section>
 
