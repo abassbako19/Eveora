@@ -17,6 +17,7 @@ export default async function HomePage() {
   const { data: campaigns } = await supabase.from("campaigns").select("id,title,slug,summary,category,target_amount_kobo,target_amount_minor,currency").eq("status","active").order("created_at",{ascending:false}).limit(3);
   return (
     <main className="overflow-hidden">
+      <MotionSystem />
       <div className="absolute inset-x-0 top-0 -z-0 h-[760px] bg-[radial-gradient(ellipse_at_top_right,_#e4ebff_0%,_transparent_48%),linear-gradient(180deg,_#f4f7ff_0%,_#f8faff_78%)]" />
       <Header />
       <section className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-14 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-32 lg:pt-24">

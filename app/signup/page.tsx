@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Brand } from "@/components/brand";
+import MotionSystem from "@/components/motion-system";
 import { SocialAuth } from "@/components/social-auth";
 import { createClient } from "@/lib/supabase/client";
 import { AUTH_CALLBACK_URL } from "@/lib/site-url";
@@ -33,6 +34,7 @@ export default function SignupPage() {
     finally { setResending(false); }
   }
   return <main className="grid min-h-screen bg-white lg:grid-cols-[.9fr_1.1fr]">
+    <MotionSystem />
     <aside className="auth-hero hidden flex-col justify-between bg-eveora-navy p-12 text-white lg:flex"><Brand light /><div className="max-w-lg"><p className="text-sm font-semibold uppercase tracking-[.2em] text-blue-200">Welcome to Eveora</p><h1 className="mt-5 text-5xl font-bold leading-tight">Your next possibility starts here.</h1><p className="mt-6 text-lg leading-8 text-blue-100">A connected world begins with people who believe in moving forward together.</p></div><p className="text-sm text-blue-200">People first. Possibility always.</p></aside>
     <section className="flex items-center justify-center px-5 py-12"><div className="auth-card w-full max-w-md"><div className="mb-10 lg:hidden"><Brand /></div><p className="text-sm font-semibold text-eveora-blue">CREATE YOUR ACCOUNT</p><h2 className="mt-3 text-3xl font-bold tracking-tight text-eveora-ink">Join Eveora</h2><p className="mt-2 text-slate-500">Create an account to become part of the community.</p>
       <div className="mt-7"><SocialAuth /></div><div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-slate-400"><span className="h-px flex-1 bg-slate-200"/>or use email<span className="h-px flex-1 bg-slate-200"/></div>
