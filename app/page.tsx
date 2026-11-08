@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Globe2, HeartHandshake, ShieldCheck, Sparkles, Users, WalletCards, HandHeart, FileText, Gift } from "lucide-react";
 import { Header } from "@/components/header";
+import MotionSystem from "@/components/motion-system";
 import { createClient } from "@/lib/supabase/server";
 import { formatCurrency, type EveoraCurrency } from "@/lib/currency";
 
